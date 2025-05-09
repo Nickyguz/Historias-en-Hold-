@@ -1,255 +1,170 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-<title>Tangram de Historia con Marcado de Pista</title>
-<style>
-  #tangram-container {
-    position: relative;
-    border: 1px solid black;
-    width: 400px;
-    height: 400px;
-  }
-  .tangram-piece {
-    position: absolute;
-    cursor: grab;
-    fill: lightblue;
-    stroke: black;
-    stroke-width: 2;
-    opacity: 0.8;
-  }
-  .tangram-piece.dragging {
-    cursor: grabbing;
-    z-index: 10;
-    opacity: 1;
-  }
-  .correct {
-    fill: lightgreen;
-    cursor: default;
-    opacity: 1;
-  }
-  .incorrect {
-    fill: lightcoral;
-    opacity: 1;
-  }
-  #story-container {
-    margin-top: 20px;
-    border: 1px solid blue;
-    padding: 10px;
-  }
-  .hidden {
-    display: none;
-  }
-  #feedback-text {
-    margin-top: 10px;
-    font-weight: bold;
-  }
-  .hint-area {
-    position: absolute;
-    border: 2px dashed orange;
-    pointer-events: none; /* Para que no interfiera con el arrastre */
-  }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cada pieza es una historia</title>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Rubik', sans-serif;
+      background-color: #fbe9d8;
+      color: #2b2b2b;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 2rem;
+    }
+
+    nav a {
+      margin: 0 1rem;
+      text-decoration: none;
+      font-weight: bold;
+      color: #2b2b2b;
+    }
+
+    .login-btn {
+      background-color: #ffc94b;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 20px;
+      font-weight: bold;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .hero img {
+      width: 180px;
+      max-width: 90%;
+    }
+
+    .hero h1 {
+      font-size: 2rem;
+      margin: 1rem 0 0.5rem;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .start-btn {
+      font-size: 1.1rem;
+      font-weight: bold;
+      background-color: #ffc94b;
+      border: none;
+      border-radius: 12px;
+      padding: 0.8rem 1.5rem;
+      cursor: pointer;
+    }
+
+    .icons-section {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    .icons-section div {
+      max-width: 120px;
+    }
+
+    .stories {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      padding: 2rem;
+    }
+
+    .card {
+      background-color: #fffbe6;
+      border-radius: 15px;
+      width: 200px;
+      text-align: center;
+      padding: 1rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .card h3 {
+      margin: 0.5rem 0;
+    }
+
+    .card button {
+      margin-top: 1rem;
+      background-color: #ffc94b;
+      border: none;
+      padding: 0.6rem 1rem;
+      border-radius: 12px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
 
-  <h2>Tangram de Historia con Marcado de Pista</h2>
-  <div id="tangram-container">
-    <svg width="400" height="400" id="tangram-svg">
-      </svg>
-    <div id="hint-area" class="hint-area hidden"></div>
-  </div>
-  <div id="story-container">
-    <h3>Historia:</h3>
-    <div id="story-fragment"></div>
-    <button id="continue-button" class="hidden">Continuar Tangram</button>
-  </div>
-  <div id="feedback-text"></div>
+  <header>
+    <nav>
+      <a href="#">Inicio</a>
+      <a href="#">Historias</a>
+      <a href="#">Acerca de</a>
+      <a href="#">Contacto</a>
+    </nav>
+    <button class="login-btn">Login</button>
+  </header>
 
-<script>
-  const historia = [
-    "El origen del Tangram se remonta a la antigua China...",
-    "...Se dice que un sirviente dejó caer una baldosa de cerámica que se rompió en siete piezas...",
-    "...Intentando reconstruirla, descubrió que podía formar muchas figuras...",
-    "...Así nació este fascinante puzzle geométrico...",
-    "...Y ahora, tú también puedes explorar su magia..."
-  ];
-  const tangramContainer = document.getElementById('tangram-container');
-  const tangramSVG = document.getElementById('tangram-svg');
-  const storyFragmentDiv = document.getElementById('story-fragment');
-  const continueButton = document.getElementById('continue-button');
-  const feedbackTextDiv = document.getElementById('feedback-text');
-  const hintArea = document.getElementById('hint-area');
-  let piezasTangram = [];
-  let piezaArrastrada = null;
-  let piezaSeleccionadaParaAyuda = null;
-  let offsetX, offsetY;
-  let indiceHistoriaActual = 0;
-  let piezasCorrectas = 0;
-  let piezasEnPosicionCorrecta = {};
-  let intentosPorPieza = {}; // Rastrea los intentos por cada pieza
+  <section class="hero">
+    <!-- GIF central -->
+    <img src=https://i.postimg.cc/fWjcf9Zv/Prueba.gif alt="GIF del teléfono en piezas">
+    <h1>Cada pieza es una historia</h1>
+    <p>Arma, descubre y escucha</p>
+    <button class="start-btn">Empezar</button>
+  </section>
 
-  const piezasDefinicion = [
-    { id: 'p1', puntos: '0,0 0,100 100,100', initialX: 50, initialY: 50, width: 100, height: 100 },
-    { id: 'p2', puntos: '0,0 0,100 100,0', initialX: 250, initialY: 50, width: 100, height: 100 },
-    { id: 'p3', puntos: '0,0 0,70.7 70.7,70.7 70.7,0', initialX: 50, initialY: 200, width: 71, height: 71 }, // Aproximado
-    { id: 'p4', puntos: '0,0 0,50 50,50', initialX: 200, initialY: 250, width: 50, height: 50 },
-    { id: 'p5', puntos: '0,0 50,0 50,-50', initialX: 300, initialY: 200, width: 50, height: 50 },
-    { id: 'p6', puntos: '0,0 50,0 50,50', initialX: 150, initialY: 100, width: 50, height: 50 },
-    { id: 'p7', puntos: '0,0 50,0 50,50', initialX: 300, initialY: 300, width: 50, height: 50 }
-  ];
+  <section class="icons-section">
+    <div>
+      <img src="https://img.icons8.com/ios-filled/50/000000/jigsaw.png" alt="Puzzle" width="40">
+      <p>Arma el puzzle</p>
+    </div>
+    <div>
+      <img src="https://img.icons8.com/ios-filled/50/000000/headphones.png" alt="Headphones" width="40">
+      <p>Escucha historias</p>
+    </div>
+    <div>
+      <img src="https://img.icons8.com/ios-filled/50/000000/lock--v1.png" alt="Lock" width="40">
+      <p>Desbloquea nuevos puzzles</p>
+    </div>
+  </section>
 
-  function inicializarTangram() {
-    piezasDefinicion.forEach(data => {
-      const pieza = document.createElementNS("http://www.w3.org/2000/svg", 'polygon');
-      pieza.setAttribute('points', data.puntos);
-      pieza.setAttribute('fill', 'lightblue');
-      pieza.setAttribute('stroke', 'black');
-      pieza.setAttribute('stroke-width', '2');
-      pieza.setAttribute('class', 'tangram-piece');
-      pieza.dataset.id = data.id;
-      pieza.dataset.initialX = data.initialX;
-      pieza.dataset.initialY = data.initialY;
-      pieza.dataset.width = data.width; // Guardar dimensiones aproximadas
-      pieza.dataset.height = data.height;
-      pieza.style.transform = `translate(${Math.random() * 300}px, ${Math.random() * 300}px)`;
-
-      pieza.addEventListener('mousedown', iniciarArrastre);
-      tangramSVG.appendChild(pieza);
-      piezasTangram.push(pieza);
-      piezasEnPosicionCorrecta[data.id] = false;
-      intentosPorPieza[data.id] = 0;
-    });
-
-    document.addEventListener('mousemove', arrastrarPieza);
-    document.addEventListener('mouseup', detenerArrastre);
-  }
-
-  function iniciarArrastre(e) {
-    piezaArrastrada = e.target;
-    piezaArrastrada.classList.add('dragging');
-    piezaArrastrada.classList.remove('incorrect');
-    offsetX = e.clientX - piezaArrastrada.getBoundingClientRect().left;
-    offsetY = e.clientY - piezaArrastrada.getBoundingClientRect().top;
-    tangramSVG.appendChild(piezaArrastrada);
-    feedbackTextDiv.textContent = '';
-    piezaSeleccionadaParaAyuda = piezaArrastrada;
-    hintArea.classList.add('hidden'); // Ocultar la pista si estaba visible
-  }
-
-  function arrastrarPieza(e) {
-    if (!piezaArrastrada) return;
-    piezaArrastrada.style.transform = `translate(${e.clientX - offsetX}px, ${e.clientY - offsetY}px)`;
-    verificarPosicionTemporal();
-  }
-
-  function detenerArrastre() {
-    if (!piezaArrastrada) return;
-    piezaArrastrada.classList.remove('dragging');
-
-    const piezaId = piezaArrastrada.dataset.id;
-    const currentX = piezaArrastrada.getBoundingClientRect().left - tangramContainer.getBoundingClientRect().left;
-    const currentY = piezaArrastrada.getBoundingClientRect().top - tangramContainer.getBoundingClientRect().top;
-    const initialX = parseFloat(piezaArrastrada.dataset.initialX);
-    const initialY = parseFloat(piezaArrastrada.dataset.initialY);
-    const tolerancia = 10;
-
-    if (Math.abs(currentX - initialX) < tolerancia && Math.abs(currentY - initialY) < tolerancia && !piezasEnPosicionCorrecta[piezaId]) {
-      piezaArrastrada.style.transform = `translate(${initialX}px, ${initialY}px)`;
-      piezaArrastrada.classList.add('correct');
-      piezaArrastrada.style.cursor = 'default';
-      piezaArrastrada.removeEventListener('mousedown', iniciarArrastre);
-      piezasEnPosicionCorrecta[piezaId] = true;
-      piezasCorrectas++;
-      intentosPorPieza[piezaId] = 0;
-      feedbackTextDiv.textContent = '¡Correcto!';
-      piezaSeleccionadaParaAyuda = null;
-      hintArea.classList.add('hidden');
-      verificarDesbloqueoHistoria();
-    } else if (!piezasEnPosicionCorrecta[piezaId] && piezaArrastrada) {
-      piezaArrastrada.classList.add('incorrect');
-      feedbackTextDiv.textContent = 'Intenta de nuevo';
-      intentosPorPieza[piezaId]++;
-      if (intentosPorPieza[piezaId] >= 2) {
-        mostrarPistaVisual(piezaArrastrada);
-        intentosPorPieza[piezaId] = 0;
-        piezaSeleccionadaParaAyuda = null;
-      } else {
-        hintArea.classList.add('hidden'); // Ocultar la pista si no se cumplen los intentos
-      }
-    } else {
-      hintArea.classList.add('hidden'); // Ocultar la pista si la pieza ya está correcta
-    }
-
-    piezaArrastrada = null;
-  }
-
-  function verificarPosicionTemporal() {
-    if (!piezaArrastrada) return;
-    const piezaId = piezaArrastrada.dataset.id;
-    const currentX = piezaArrastrada.getBoundingClientRect().left - tangramContainer.getBoundingClientRect().left;
-    const currentY = piezaArrastrada.getBoundingClientRect().top - tangramContainer.getBoundingClientRect().top;
-    const initialX = parseFloat(piezaArrastrada.dataset.initialX);
-    const initialY = parseFloat(piezaArrastrada.dataset.initialY);
-    const toleranciaCercana = 30;
-
-    if (Math.abs(currentX - initialX) < toleranciaCercana && Math.abs(currentY - initialY) < toleranciaCercana && !piezasEnPosicionCorrecta[piezaId]) {
-      feedbackTextDiv.textContent = '¡Casi!';
-    } else if (!piezaArrastrada.classList.contains('dragging') && !piezasEnPosicionCorrecta[piezaId] && feedbackTextDiv.textContent === '¡Casi!') {
-      feedbackTextDiv.textContent = 'Intenta de nuevo';
-    }
-  }
-
-  function mostrarPistaVisual(pieza) {
-    if (pieza && !pieza.classList.contains('correct')) {
-      const initialX = parseFloat(pieza.dataset.initialX);
-      const initialY = parseFloat(pieza.dataset.initialY);
-      const width = parseFloat(pieza.dataset.width) || 50; // Usar un valor por defecto si no está definido
-      const height = parseFloat(pieza.dataset.height) || 50;
-
-      hintArea.style.left = `${initialX}px`;
-      hintArea.style.top = `${initialY}px`;
-      hintArea.style.width = `${width}px`;
-      hintArea.style.height = `${height}px`;
-      hintArea.classList.remove('hidden');
-
-      // Ocultar la pista después de un breve tiempo
-      setTimeout(() => {
-        hintArea.classList.add('hidden');
-      }, 2000);
-    } else {
-      hintArea.classList.add('hidden');
-    }
-  }
-
-  function verificarDesbloqueoHistoria() {
-    const piezasParaDesbloqueo = 2;
-
-    if (piezasCorrectas > 0 && piezasCorrectas % piezasParaDesbloqueo === 0 && indiceHistoriaActual < historia.length) {
-      mostrarFragmentoHistoria();
-      continueButton.classList.remove('hidden');
-    } else if (piezasCorrectas === piezasTangram.length && indiceHistoriaActual < historia.length) {
-      mostrarFragmentoHistoria();
-      continueButton.classList.remove('hidden');
-    } else if (piezasCorrectas === piezasTangram.length && indiceHistoriaActual === historia.length) {
-      storyFragmentDiv.textContent = "¡Tangram completado! Fin de la historia.";
-      continueButton.classList.add('hidden');
-    }
-  }
-
-  function mostrarFragmentoHistoria() {
-    if (indiceHistoriaActual < historia.length) {
-      storyFragmentDiv.textContent = historia[indiceHistoriaActual];
-    }
-  }
-
-  continueButton.addEventListener('click', function() {
-    indiceHistoriaActual++;
-    storyFragmentDiv.textContent = '';
-    this.classList.add('hidden');
-  });
-
-  inicializarTangram();
-</script>
+  <section class="stories">
+    <div class="card">
+      <img src="https://img.icons8.com/color/96/user-female-circle.png" width="60">
+      <h3>Historia</h3>
+      <p>Lorem ipsum dolor</p>
+      <button>Leer historia</button>
+    </div>
+    <div class="card">
+      <img src="https://img.icons8.com/color/96/computer.png" width="60">
+      <h3>Historia</h3>
+      <p>Lorem ipsum dolor</p>
+      <button>Leer historia</button>
+    </div>
+    <div class="card">
+      <img src="https://img.icons8.com/color/96/user-male-circle.png" width="60">
+      <h3>Historia</h3>
+      <p>Lorem ipsum dolor</p>
+      <button>Leer historia</button>
+    </div>
+  </section>
 
 </body>
 </html>
