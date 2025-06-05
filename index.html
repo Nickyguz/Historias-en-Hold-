@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Cada pieza es una historia</title>
-  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap" rel="stylesheet" />
   <style>
     body {
       margin: 0;
@@ -12,21 +12,19 @@
       background-color: #fbe9d8;
       color: #2b2b2b;
     }
-
     header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 1.2rem 2rem;
     }
-
     nav a {
       margin: 0 1rem;
       text-decoration: none;
       font-weight: bold;
       color: #2b2b2b;
+      cursor: pointer;
     }
-
     .login-btn {
       background-color: #ffc94b;
       border: none;
@@ -36,27 +34,24 @@
       font-size: 1rem;
       cursor: pointer;
     }
-
-    .hero {
-      text-align: center;
+    section {
       padding: 2rem;
     }
-
+    .hero {
+      text-align: center;
+    }
     .hero img {
       width: 180px;
       max-width: 90%;
     }
-
     .hero h1 {
       font-size: 2rem;
       margin: 1rem 0 0.5rem;
     }
-
     .hero p {
       font-size: 1.2rem;
       margin-bottom: 1.5rem;
     }
-
     .start-btn {
       font-size: 1.1rem;
       font-weight: bold;
@@ -66,26 +61,21 @@
       padding: 0.8rem 1.5rem;
       cursor: pointer;
     }
-
     .icons-section {
       display: flex;
       justify-content: center;
       gap: 2rem;
-      padding: 2rem;
       text-align: center;
     }
-
     .icons-section div {
       max-width: 120px;
     }
-
     .stories {
       display: flex;
       justify-content: center;
+      flex-wrap: wrap;
       gap: 1.5rem;
-      padding: 2rem;
     }
-
     .card {
       background-color: #fffbe6;
       border-radius: 15px;
@@ -94,11 +84,9 @@
       padding: 1rem;
       box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     }
-
     .card h3 {
       margin: 0.5rem 0;
     }
-
     .card button {
       margin-top: 1rem;
       background-color: #ffc94b;
@@ -108,64 +96,249 @@
       font-weight: bold;
       cursor: pointer;
     }
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      align-items: center;
+    }
+    .modal-content {
+      background-color: white;
+      padding: 2rem;
+      border-radius: 12px;
+      text-align: center;
+      max-width: 600px;
+      animation: fadeIn 0.5s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    .puzzle-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 100px);
+      gap: 5px;
+      margin: 20px auto;
+    }
+    .puzzle-piece {
+      width: 100px;
+      height: 100px;
+      background: linear-gradient(to bottom right, #ffe6a7, #ffc94b);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.4rem;
+      border-radius: 10px;
+      cursor: grab;
+      border: 2px solid #aaa;
+      transition: background 0.3s;
+    }
+    .puzzle-piece:hover {
+      background: #ffe080;
+    }
+    .hidden-story {
+      display: none;
+      margin-top: 1rem;
+      color: #444;
+      background: #fffbe6;
+      padding: 1rem;
+      border-radius: 10px;
+      text-align: left;
+    }
+    .info-section {
+      display: none;
+      padding: 2rem;
+      background-color: #fffbe6;
+      border-top: 2px solid #ffc94b;
+    }
+    .info-section.active {
+      display: block;
+    }
   </style>
 </head>
 <body>
-
   <header>
     <nav>
-      <a href="#">Inicio</a>
-      <a href="#">Historias</a>
-      <a href="#">Acerca de</a>
-      <a href="#">Contacto</a>
+      <a onclick="showSection('hero')">Inicio</a>
+      <a onclick="showSection('stories')">Historias</a>
+      <a onclick="showSection('about')">Acerca de</a>
+      <a onclick="showSection('contact')">Contacto</a>
     </nav>
-    <button class="login-btn">Login</button>
+    <button class="login-btn" onclick="alert('Redirigiendo a Login...')">Login</button>
   </header>
 
-  <section class="hero">
-    <!-- GIF central -->
-    <img src=https://i.postimg.cc/fWjcf9Zv/Prueba.gif >
+  <section class="hero" id="hero">
+    <img src="https://i.postimg.cc/fWjcf9Zv/Prueba.gif" />
     <h1>Cada pieza es una historia</h1>
     <p>Arma, descubre y escucha</p>
-    <button class="start-btn">Empezar</button>
+    <button class="start-btn" onclick="showSection('stories')">Empezar</button>
   </section>
 
   <section class="icons-section">
     <div>
-      <img src="https://img.icons8.com/ios-filled/50/000000/jigsaw.png" alt="Puzzle" width="40">
+      <img src="https://img.icons8.com/ios-filled/50/000000/jigsaw.png" width="40" />
       <p>Arma el puzzle</p>
     </div>
     <div>
-      <img src="https://img.icons8.com/ios-filled/50/000000/headphones.png" alt="Headphones" width="40">
+      <img src="https://img.icons8.com/ios-filled/50/000000/headphones.png" width="40" />
       <p>Escucha historias</p>
     </div>
     <div>
-      <img src="https://img.icons8.com/ios-filled/50/000000/lock--v1.png" alt="Lock" width="40">
-      <p>Desbloquea nuevos puzzles</p>
+      <img src="https://img.icons8.com/ios-filled/50/000000/lock--v1.png" width="40" />
+      <p>Desbloquea nuevas piezas</p>
     </div>
   </section>
 
-  <section class="stories">
+  <section class="stories" id="stories">
     <div class="card">
-      <img src="https://img.icons8.com/color/96/user-female-circle.png" width="60">
-      <h3>Historia</h3>
-      <p>Lorem ipsum dolor</p>
-      <button>Leer historia</button>
+      <img src="https://img.icons8.com/color/96/user-female-circle.png" width="60" />
+      <h3>Historia 1</h3>
+      <p>Cliente de Argentina</p>
+      <button onclick="startPuzzle(1)">Leer historia</button>
     </div>
     <div class="card">
-      <img src="https://img.icons8.com/color/96/computer.png" width="60">
-      <h3>Historia</h3>
-      <p>Lorem ipsum dolor</p>
-      <button>Leer historia</button>
+      <img src="https://img.icons8.com/color/96/user-male-circle.png" width="60" />
+      <h3>Historia 2</h3>
+      <p>Cliente de México</p>
+      <button onclick="startPuzzle(2)">Leer historia</button>
     </div>
     <div class="card">
-      <img src="https://img.icons8.com/color/96/user-male-circle.png" width="60">
-      <h3>Historia</h3>
-      <p>Lorem ipsum dolor</p>
-      <button>Leer historia</button>
+      <img src="https://img.icons8.com/color/96/user-female-circle.png" width="60" />
+      <h3>Historia 3</h3>
+      <p>Abuelita triste</p>
+      <button onclick="startPuzzle(3)">Leer historia</button>
     </div>
   </section>
 
+  <section class="info-section" id="about">
+    <h2>Acerca del proyecto</h2>
+    <p>Este proyecto académico reúne historias reales escuchadas en un call center. Cada historia se desbloquea mediante un puzzle, para conectar con el trabajo emocional detrás de cada llamada.</p>
+  </section>
+
+  <section class="info-section" id="contact">
+    <h2>Contacto</h2>
+    <p>¿Tienes una historia o sugerencia? Escríbenos a: <strong>contacto@historiaspuzzle.com</strong></p>
+  </section>
+
+  <div id="modals"></div>
+
+  <script>
+    const stories = {
+      1: [
+        'Cliente de Argentina llamó para saber el balance de su tarjeta.',
+        'Durante la llamada, contó que su esposo la estaba engañando con una prostituta.',
+        'Ella se negaba a pagar la tarjeta porque él fue quien hizo las compras.'
+      ],
+      2: [
+        'Un cliente me preguntó mi Instagram y mi número...',
+        'Dijo: “yo me llamo Ángel, me gustó tu voz”.',
+        'Terminó diciendo que podía ser mi ángel guardián desde México.'
+      ],
+      3: [
+        'Una señora de aproximadamente 80 años nos atendió...',
+        'Se puso triste porque no sabía cómo pagar y nadie la ayudaba.',
+        'Dijo que su hija casi no la visita y sus nietos no la ayudan.'
+      ]
+    };
+
+    function showSection(id) {
+      document.querySelectorAll('section').forEach(sec => sec.style.display = 'none');
+      const section = document.getElementById(id);
+      if (section) section.style.display = 'block';
+    }
+
+    let dragSrc = null;
+
+    function startPuzzle(num) {
+      const modal = document.createElement('div');
+      modal.className = 'modal';
+      modal.style.display = 'flex';
+      modal.id = `modal${num}`;
+
+      const gridId = `puzzleGrid${num}`;
+      const storyParts = stories[num];
+
+      let content = `<div class="modal-content">
+        <h2>Resuelve el puzzle</h2>
+        <div class="puzzle-grid" id="${gridId}" data-id="${num}"></div>`;
+
+      storyParts.forEach((text, i) => {
+        content += `<div class="hidden-story" id="story${num}-part${i + 1}">${text}</div>`;
+      });
+
+      content += `<button onclick="closePuzzle(${num})">Cerrar</button></div>`;
+
+      modal.innerHTML = content;
+      document.getElementById('modals').innerHTML = '';
+      document.getElementById('modals').appendChild(modal);
+
+      const puzzle = Array.from({ length: 9 }, (_, i) => i + 1);
+      const shuffled = puzzle.sort(() => Math.random() - 0.5);
+      const grid = modal.querySelector('.puzzle-grid');
+
+      shuffled.forEach(n => {
+        const div = document.createElement('div');
+        div.className = 'puzzle-piece';
+        div.innerText = n;
+        div.draggable = true;
+        div.addEventListener('dragstart', dragStart);
+        div.addEventListener('dragover', e => e.preventDefault());
+        div.addEventListener('drop', dropPiece);
+        grid.appendChild(div);
+      });
+    }
+
+    function dragStart(e) {
+      dragSrc = this;
+    }
+
+    function dropPiece(e) {
+      if (dragSrc !== this) {
+        const temp = this.innerText;
+        this.innerText = dragSrc.innerText;
+        dragSrc.innerText = temp;
+        checkProgress(this.closest('.puzzle-grid'));
+      }
+    }
+
+    function checkProgress(grid) {
+      const current = Array.from(grid.children).map(div => div.innerText);
+      const correct = Array.from({ length: 9 }, (_, i) => String(i + 1));
+      const matched = current.filter((v, i) => v === correct[i]).length;
+      const partCount = Math.floor(matched / 3);
+      const puzzleId = grid.getAttribute('data-id');
+
+      for (let i = 1; i <= partCount; i++) {
+        const part = document.getElementById(`story${puzzleId}-part${i}`);
+        if (part) part.style.display = 'block';
+      }
+    }
+
+    function closePuzzle(num) {
+      const modal = document.getElementById(`modal${num}`);
+      if (modal) modal.remove();
+    }
+
+    showSection('hero');
+  </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
 
